@@ -3,18 +3,29 @@ from tkinter import *
 root  = Tk()
 root.minsize(500, 450) # seeting the minimum size
 
-
-
+# setting the calculator screen as a string variable
 calc_text = StringVar()
+# emptying the string variable 
 calc_text.set("")
 
+#####################################################
+#                                                   #
+#            Back-end functions                     #
+#                                                   #
+#####################################################
+
+# as a rule, the bellow functions take the text on the
+# calc screen and append the respective number/operation
+
+# second row 
 def button_slash() :
         calc_text.set(calc_text.get() + "/")
 
+# clearing the screen
 def button_clear() :
         calc_text.set("")
 
-
+# third row 
 def button_seven() :
         calc_text.set(calc_text.get() + "7")
 
@@ -27,6 +38,7 @@ def button_nine() :
 def button_multi() :
         calc_text.set(calc_text.get() + "*")
 
+# fourth row
 def button_four() :
         calc_text.set(calc_text.get() + "4")
 
@@ -36,10 +48,9 @@ def button_five() :
 def button_six() :
         calc_text.set(calc_text.get() + "6")
 
+# fifth row 
 def button_minus() :
         calc_text.set(calc_text.get() + "-")
-
-
 def button_one() :
         calc_text.set(calc_text.get() + "1")
 
@@ -49,9 +60,9 @@ def button_two() :
 def button_three() :
         calc_text.set(calc_text.get() + "3")
 
+# sixth row
 def button_plus() :
         calc_text.set(calc_text.get() + "+")
-
 
 def button_zero() :
         calc_text.set(calc_text.get() + "0")
@@ -59,54 +70,78 @@ def button_zero() :
 def button_dot() :
         calc_text.set(calc_text.get() + ".")
 
+# the longest function the "=", it evaluates the expresion 
 def button_equals() : 
+        # try catch block in case user messes up 
         try : 
+                # taking the expression from the screen 
                 expr = calc_text.get()
+
+                # these variables are used for negative numbers
                 minus = 1.0
                 minus2 = 1.0
-                if (expr.find("--") > -1) :
-                        expr = expr.replace("--", "+")
                 
-                if (expr.find("*-") > -1) :
-                        expr = expr.replace("-", "")
-                        minus2 = -1
-                if (expr.find("/-") > -1) :
-                        expr = expr.replace("-", "")
-                        minus2 = -1.0
-
+                # here we remove the first minus in the expression
+                # and assign the -1 to the minus variable 
                 if (expr[0] == "-") :
                         minus = -1.0
                         expr = expr[1:]
-                              
+                # in case of an expression such as 2--2 we transform the "--" in "+" 
+                if (expr.find("--") > -1) :
+                        expr = expr.replace("--", "+")
+                
+                # in case the second number is a minus we assign -1 to the minus 2 
+                # and remove the "-"
+                if (expr.find("*-") > -1) :
+                        expr = expr.replace("-", "")
+                        minus2 = -1.0
+                
+                # same as above only with the "/" operator
+                if (expr.find("/-") > -1) :
+                        expr = expr.replace("-", "")
+                        minus2 = -1.0
+              
+                # the addition operation 
+                # as you can see if the first number gets multiplied by minus
+                # in case the initial number is negative minus is -1 
+                # otherwise the minus is 1 
                 if (expr[expr.find("+")] == "+") :
-                        print("here")
                         result = expr.split("+")
                         calc_text.set(float(result[0])*minus + float(result[1]))
                         return
 
+                # division operation 
+                # notice the placement of the minus and minus2 variables 
                 if (expr[expr.find("/")] == "/") :
                         result = expr.split("/")
-                        calc_text.set(float(result[0])*minus / float(result[1])*minus2)
+                        calc_text.set(round(float(result[0])*minus / float(result[1])*minus2, 2))
+                        return
                         
+                # substraction operation 
                 if (expr[expr.find("-")] == "-") :
                         result = expr.split("-")
                         calc_text.set(float(result[0])*minus - float(result[1]))
                         return
-                
+             
+                # multiplication                 
                 if (expr[expr.find("*")] == "*") :
                         result = expr.split("*")
                         calc_text.set(float(result[0])*minus * float(result[1])*minus2)
                         return
+       
+                # because at the end of each if there is a return
+                # in case none of the above cases apply it raises an error
+                raise("it reached the end something not cool")
         
         except : 
                 calc_text.set("operation not possible")
+        
 
-                
-                
-         
-
-
-
+#####################################################
+#                                                   #
+#            Front-end functions                    #
+#                                                   #
+#####################################################
 
 # setting equal weights for columns and rows
 for row_index in range(6):
