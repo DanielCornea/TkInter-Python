@@ -140,7 +140,7 @@ def button_equals() :
 #####################################################
 #                                                   #
 #            Front-end functions                    #
-#                                                   #
+#                                                   
 #####################################################
 
 # setting equal weights for columns and rows
