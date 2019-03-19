@@ -59,6 +59,52 @@ def button_zero() :
 def button_dot() :
         calc_text.set(calc_text.get() + ".")
 
+def button_equals() : 
+        try : 
+                expr = calc_text.get()
+                minus = 1.0
+                minus2 = 1.0
+                if (expr.find("--") > -1) :
+                        expr = expr.replace("--", "+")
+                
+                if (expr.find("*-") > -1) :
+                        expr = expr.replace("-", "")
+                        minus2 = -1
+                if (expr.find("/-") > -1) :
+                        expr = expr.replace("-", "")
+                        minus2 = -1.0
+
+                if (expr[0] == "-") :
+                        minus = -1.0
+                        expr = expr[1:]
+                              
+                if (expr[expr.find("+")] == "+") :
+                        print("here")
+                        result = expr.split("+")
+                        calc_text.set(float(result[0])*minus + float(result[1]))
+                        return
+
+                if (expr[expr.find("/")] == "/") :
+                        result = expr.split("/")
+                        calc_text.set(float(result[0])*minus / float(result[1])*minus2)
+                        
+                if (expr[expr.find("-")] == "-") :
+                        result = expr.split("-")
+                        calc_text.set(float(result[0])*minus - float(result[1]))
+                        return
+                
+                if (expr[expr.find("*")] == "*") :
+                        result = expr.split("*")
+                        calc_text.set(float(result[0])*minus * float(result[1])*minus2)
+                        return
+        
+        except : 
+                calc_text.set("operation not possible")
+
+                
+                
+         
+
 
 
 
@@ -96,10 +142,8 @@ button_plus = Button(root, text = "+", command = button_plus).grid(row = 4, colu
 
 # six row 
 button_zero = Button(root, text = "0", command = button_zero).grid(row = 5, column = 0, columnspan = 2, sticky=N+S+E+W)
-button_dot = Button(root, text = ".").grid(row = 5, column = 2, sticky=N+S+E+W)
-button_equals = Button(root, text = "=").grid(row = 5, column = 3, sticky=N+S+E+W)
-
-
+button_dot = Button(root, text = ".", command = button_dot).grid(row = 5, column = 2, sticky=N+S+E+W)
+button_equals = Button(root, text = "=", command = button_equals).grid(row = 5, column = 3, sticky=N+S+E+W)
 
 
 root.mainloop()
